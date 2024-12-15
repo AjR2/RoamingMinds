@@ -9,65 +9,93 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background: linear-gradient(135deg, #0596f2, #d4e6ff);
+            background-color: #f4f4f9; /* Muted background */
             color: #333;
-            text-align: center;
         }
 
         header {
-            background: #0596f2;
-            color: white;
+            background-color: #e1e5ea; /* Light muted tone */
             padding: 20px 0;
+            text-align: center;
+            border-bottom: 2px solid #d4d8dc;
         }
 
         header h1 {
             font-size: 2.5rem;
+            color: #444;
             margin: 0;
         }
 
         header p {
             font-size: 1.2rem;
-            margin: 10px 0 0;
+            color: #666;
         }
 
         main {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             padding: 20px;
         }
 
-        section {
-            margin: 30px 0;
+        .card {
+            background-color: #ffffff; /* Card background */
+            width: 90%;
+            max-width: 800px;
+            margin: 20px 0;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .card h2 {
+            font-size: 1.8rem;
+            color: #444;
+            margin-bottom: 15px;
+        }
+
+        .card p {
+            font-size: 1rem;
+            color: #555;
+            line-height: 1.6;
         }
 
         .cta-button {
-            background: #0596f2;
+            background-color: #5a9ebf; /* Muted blue */
             color: white;
-            padding: 15px 25px;
+            padding: 12px 20px;
             border: none;
             border-radius: 5px;
-            font-size: 1.1rem;
+            font-size: 1rem;
             cursor: pointer;
             text-decoration: none;
             margin: 10px;
+            display: inline-block;
         }
 
         .cta-button:hover {
-            background: #047acc;
+            background-color: #4a8aa5; /* Slightly darker tone */
+        }
+
+        footer {
+            background-color: #e1e5ea;
+            padding: 15px;
+            text-align: center;
+            border-top: 2px solid #d4d8dc;
+            font-size: 0.9rem;
+            color: #666;
         }
 
         .social-links a {
-            margin: 0 10px;
+            color: #5a9ebf;
             text-decoration: none;
-            color: #0596f2;
+            margin: 0 10px;
+            font-weight: bold;
         }
 
         .social-links a:hover {
             text-decoration: underline;
-        }
-
-        footer {
-            background: #f2f2f2;
-            padding: 15px;
-            font-size: 0.9rem;
         }
     </style>
 </head>
@@ -79,26 +107,27 @@
     </header>
 
     <main>
-        <section>
+        <div class="card">
             <h2>About the Podcast</h2>
             <p>Join us as we dive into candid conversations about mental health, personal growth, and resilience. With humor and authenticity, we explore strategies for navigating life’s challenges and celebrating your journey.</p>
-        </section>
+        </div>
 
-        <section>
+        <div class="card">
             <h2>Listen Now</h2>
             <a href="https://spotify.com" target="_blank" class="cta-button">Spotify</a>
             <a href="https://apple.com/podcasts" target="_blank" class="cta-button">Apple Podcasts</a>
             <a href="https://your-podcast-platform-link" target="_blank" class="cta-button">More Platforms</a>
-        </section>
+        </div>
 
-        <section>
+        <div class="card">
             <h2>Follow Us</h2>
+            <p>Stay connected and never miss an update:</p>
             <div class="social-links">
-                <a href="https://instagram.com/RoamingMindsPodcast" target="_blank">Instagram</a> |
-                <a href="https://twitter.com/RoamingMindsPod" target="_blank">Twitter</a> |
+                <a href="https://instagram.com/RoamingMindsPodcast" target="_blank">Instagram</a>
+                <a href="https://twitter.com/RoamingMindsPod" target="_blank">Twitter</a>
                 <a href="https://facebook.com/RoamingMindsPodcast" target="_blank">Facebook</a>
             </div>
-        </section>
+        </div>
     </main>
 
     <footer>
