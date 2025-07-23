@@ -4,18 +4,93 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Roaming Minds Podcast</title>
+    <meta name="description" content="Exploring mental health, one thought at a time. Listen to candid conversations about personal growth and resilience.">
     <style>
-        /* General Styles */
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            color: #333;
-            background: url('RoamingMindsThree.png') no-repeat center center fixed; /* Replace 'background.jpg' with your image path */
-            background-size: cover;
+        :root {
+            --primary-color: #d63384;
+            --primary-hover: #b02a5b;
+            --text-color: #333;
+            --card-bg: rgba(255, 255, 255, 0.85);
+            --overlay-bg: rgba(244, 244, 249, 0.7);
+            --focus-color: #0066cc;
+            --border-radius: 16px;
+            --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* Overlay to soften the background image */
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: var(--text-color);
+            background: linear-gradient(135deg, #e8a5ff 0%, #d8b5ff 50%, #e0c5ff 100%);
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animated background canvas */
+        #background-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            opacity: 0.6;
+        }
+
+        /* Floating particles */
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .particle:nth-child(odd) {
+            animation-direction: reverse;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        /* Comet trails */
+        .comet {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #fff;
+            border-radius: 50%;
+            box-shadow: 0 0 6px #fff, 0 0 12px #fff, 0 0 18px #fff;
+            animation: comet 8s linear infinite;
+        }
+
+        @keyframes comet {
+            0% {
+                transform: translateX(-100vw) translateY(100vh);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateX(100vw) translateY(-100vh);
+                opacity: 0;
+            }
+        }
+
+        /* Enhanced overlay with balanced gradient */
         body::before {
             content: "";
             position: fixed;
@@ -23,124 +98,581 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(244, 244, 249, 0.40); /* Slightly muted overlay */
-            z-index: -1; /* Places it behind the content */
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(180, 160, 255, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 160, 200, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(220, 180, 255, 0.2) 0%, transparent 50%);
+            z-index: -1;
+            animation: gradientShift 10s ease-in-out infinite;
         }
 
-        /* Header */
+        @keyframes gradientShift {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 0.9; }
+        }
+
+        /* Skip link */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 6px;
+            background: #000;
+            color: #fff;
+            padding: 8px 12px;
+            text-decoration: none;
+            z-index: 1000;
+            border-radius: 4px;
+            font-weight: bold;
+            transition: var(--transition);
+        }
+        .skip-link:focus {
+            top: 6px;
+        }
+
+        /* Animated header */
         header {
-            padding: 20px 0;
+            padding: clamp(40px, 8vw, 80px) 20px;
             text-align: center;
+            position: relative;
+            z-index: 10;
         }
 
         header h1 {
-            font-size: 2.5rem;
-            color: black;
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            color: rgba(60, 40, 80, 0.9);
             margin: 0;
+            font-weight: 600;
+            text-shadow: 0 2px 12px rgba(255, 255, 255, 0.4);
+            animation: titleGlow 4s ease-in-out infinite alternate;
+        }
+
+        @keyframes titleGlow {
+            0% { text-shadow: 0 2px 12px rgba(255, 255, 255, 0.4); }
+            100% { text-shadow: 0 3px 16px rgba(255, 255, 255, 0.5), 0 0 20px rgba(214, 51, 132, 0.2); }
         }
 
         header p {
-            font-size: 1.3rem;
-            color: black;
-            margin-top: 10px;
-            display: inline;
+            font-size: clamp(1.2rem, 3vw, 1.6rem);
+            color: rgba(70, 50, 90, 0.85);
+            margin-top: 20px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            animation: fadeInUp 1s ease-out 0.5s both;
+            text-shadow: 0 1px 3px rgba(255, 255, 255, 0.3);
         }
 
-        /* Main Content */
+        /* Main content with stagger animation */
         main {
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 10px;
+            padding: 20px;
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 10;
         }
 
+        /* Enhanced cards with balanced glassmorphism */
         .card {
-            background-color: rgba(255, 255, 255, 0.25); /* Card background */
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
             width: 100%;
             max-width: 800px;
-            margin-top: 15px;
-            margin-bottom: 40px;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            padding: clamp(25px, 5vw, 40px);
+            border-radius: var(--border-radius);
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
             text-align: center;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            transform: translateY(50px);
+            opacity: 0;
+            animation: cardSlideIn 0.8s ease-out forwards;
+        }
+
+        .card:nth-child(1) { animation-delay: 0.2s; }
+        .card:nth-child(2) { animation-delay: 0.4s; }
+        .card:nth-child(3) { animation-delay: 0.6s; }
+
+        @keyframes cardSlideIn {
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.8s;
+        }
+
+        .card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 
+                0 20px 60px rgba(0, 0, 0, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.4);
+        }
+
+        .card:hover::before {
+            left: 100%;
         }
 
         .card h2 {
-            font-size: 2rem;
-            color: black;
-            margin-bottom: 15px;
+            font-size: clamp(1.6rem, 4vw, 2.4rem);
+            color: rgba(60, 40, 80, 0.9);
+            margin-bottom: 20px;
+            font-weight: 600;
+            text-shadow: 0 2px 8px rgba(255, 255, 255, 0.4);
         }
 
         .card p {
-            font-size: 1.3rem;
-            color: black;
-            line-height: 1.6;
+            font-size: clamp(1rem, 2.5vw, 1.2rem);
+            color: rgba(70, 50, 90, 0.8);
+            line-height: 1.8;
+            margin-bottom: 25px;
+            text-shadow: 0 1px 3px rgba(255, 255, 255, 0.3);
         }
 
+        /* Enhanced buttons with lighter gradient */
         .cta-button {
-            background-color: #ffb6c1; 
+            background: linear-gradient(135deg, #e85aa1, #d63384);
             color: white;
-            padding: 12px 20px;
+            padding: 14px 28px;
             border: none;
-            border-radius: 5px;
-            font-size: 1rem;
+            border-radius: 12px;
+            font-size: clamp(0.95rem, 2vw, 1.1rem);
+            font-weight: 600;
             cursor: pointer;
             text-decoration: none;
             margin: 10px;
             display: inline-block;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            min-width: 140px;
+            box-shadow: 0 4px 15px rgba(214, 51, 132, 0.25);
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .cta-button:hover::before {
+            width: 300px;
+            height: 300px;
         }
 
         .cta-button:hover {
-            background-color: #ffd3da; 
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(214, 51, 132, 0.3);
+            background: linear-gradient(135deg, #f066a8, #e85aa1);
         }
 
+        .cta-button:focus {
+            outline: 3px solid var(--focus-color);
+            outline-offset: 2px;
+        }
+
+        .cta-button:active {
+            transform: translateY(-1px);
+        }
+
+        /* Social links with hover effects */
+        .social-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 25px;
+        }
+ter with ligh text
+        /* Enhanced footer with darker text and proper centering */
         footer {
             text-align: center;
-            font-size: 0.9rem;
-            color: black;
+            font-size: clamp(0.9rem, 2vw, 1rem);
+            color: rgba(80, 60, 100, 0.7);
+            padding: 60px 20px 30px;
+            margin-top: 60px;
+            position: relative;
+            z-index: 10;
+            text-shadow: 0 1px 2px rgba(255, 255, 255, 0.2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
-        .social-links a {
-            text-decoration: none;
-            margin: 0 10px;
+        footer p {
+            margin: 0;
+            text-align: center;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .social-links {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .cta-button {
+                width: 100%;
+                max-width: 280px;
+                margin: 8px 0;
+            }
+            
+            main {
+                padding: 15px;
+                gap: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .card {
+                margin: 10px 0;
+                padding: 25px 20px;
+            }
+            
+            header {
+                padding: 30px 15px;
+            }
+        }
+
+        /* Accessibility */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+            
+            .particle, .comet {
+                display: none;
+            }
+        }
+
+        @media (prefers-contrast: high) {
+            .card {
+                background: rgba(255, 255, 255, 0.95);
+                color: #000;
+            }
+            .card h2, .card p {
+                color: #000;
+            }
         }
     </style>
 </head>
 <body>
-
-    <header>
+    <canvas id="background-canvas"></canvas>
+    
+    <a href="#main" class="skip-link">Skip to main content</a>
+    
+    <header role="banner">
+        <nav aria-label="Main navigation">
+            <ul style="list-style: none; padding: 0; margin: 0 0 20px 0; display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
+                <li><a href="#about" style="color: rgba(60, 40, 80, 0.8); text-decoration: none; font-weight: 500; transition: color 0.3s;">About</a></li>
+                <li><a href="#listen" style="color: rgba(60, 40, 80, 0.8); text-decoration: none; font-weight: 500; transition: color 0.3s;">Listen</a></li>
+                <li><a href="#social" style="color: rgba(60, 40, 80, 0.8); text-decoration: none; font-weight: 500; transition: color 0.3s;">Follow</a></li>
+            </ul>
+        </nav>
         <h1>Roaming Minds Podcast</h1>
         <p>Exploring mental health, one thought at a time.</p>
+        <div style="margin-top: 30px;">
+            <a href="#listen" class="cta-button" style="font-size: 1.2rem; padding: 16px 32px;">🎧 Subscribe Now</a>
+        </div>
     </header>
 
-    <main>
-        <div class="card">
-            <h2>About the Podcast</h2>
-            <p>Join us as we dive into candid conversations about mental health, personal growth, and resilience. With humor and authenticity, we explore strategies for navigating life’s challenges and celebrating your journey.</p>
-        </div>
-
-        <div class="card">
-            <h2>Listen Now</h2>
-            <a href="https://podcasts.apple.com/us/podcast/roaming-minds/id1828431153" target="_blank" class="cta-button">Apple Podcasts</a>
-            <a href="https://open.spotify.com/show/1Uzt9QMXmmtWsekVt1tPwQ" target="_blank" class="cta-button">Spotify</a>
-            <a href="https://www.youtube.com/@RoamingMindsPodcast/podcasts" target="_blank" class="cta-button">Youtube</a>
-        </div>
-
-        <div class="card">
-            <h2>Follow Us</h2>
-            <p>Stay connected and never miss an update:</p>
-            <div class="social-links">
-                <a href="https://instagram.com/Roaming_Minds_Pod" target="_blank" class="cta-button">Instagram</a>
-                <a href="https://twitter.com/RoamingMindsPod" target="_blank" class="cta-button">Twitter</a>
-                <a href="https://facebook.com/RoamingMindsPodcast" target="_blank" class="cta-button">TikTok</a>
+    <main id="main" role="main">
+        <section class="card" id="about" aria-labelledby="about-heading">
+            <h2 id="about-heading">About the Podcast</h2>
+            <div style="text-align: left; max-width: 600px; margin: 0 auto;">
+                <p style="margin-bottom: 15px;">Join us as we dive into candid conversations about mental health, personal growth, and resilience.</p>
+                <ul style="list-style: none; padding: 0; margin: 20px 0;">
+                    <li style="margin: 10px 0; padding-left: 20px; position: relative;">
+                        <span style="position: absolute; left: 0; color: var(--primary-color);">✨</span>
+                        Authentic discussions with humor and heart
+                    </li>
+                    <li style="margin: 10px 0; padding-left: 20px; position: relative;">
+                        <span style="position: absolute; left: 0; color: var(--primary-color);">🧠</span>
+                        Practical strategies for mental wellness
+                    </li>
+                    <li style="margin: 10px 0; padding-left: 20px; position: relative;">
+                        <span style="position: absolute; left: 0; color: var(--primary-color);">🌟</span>
+                        Celebrating your unique journey
+                    </li>
+                </ul>
             </div>
-        </div>
+            <div style="background: rgba(214, 51, 132, 0.1); padding: 20px; border-radius: 12px; margin-top: 25px; border-left: 4px solid var(--primary-color);">
+                <h3 style="margin: 0 0 10px 0; color: rgba(60, 40, 80, 0.9); font-size: 1.1rem;">Latest Episode</h3>
+                <p style="margin: 0; font-style: italic; color: rgba(70, 50, 90, 0.8);">"Mental Health vs Mental Wellness"</p>
+            </div>
+        </section>
+
+        <section class="card" id="listen" aria-labelledby="listen-heading">
+            <h2 id="listen-heading">Listen Now</h2>
+            <p>Available on all major podcast platforms:</p>
+            <nav aria-label="Podcast platforms">
+                <a href="https://podcasts.apple.com/us/podcast/roaming-minds/id1828431153" 
+                   target="_blank" 
+                   rel="noopener noreferrer"
+                   class="cta-button" 
+                   aria-label="Listen on Apple Podcasts (opens in new tab)">
+                   🎵 Apple Podcasts
+                </a>
+                <a href="https://open.spotify.com/show/1Uzt9QMXmmtWsekVt1tPwQ" 
+                   target="_blank" 
+                   rel="noopener noreferrer"
+                   class="cta-button" 
+                   aria-label="Listen on Spotify (opens in new tab)">
+                   🎧 Spotify
+                </a>
+                <a href="https://www.youtube.com/@RoamingMindsPodcast/podcasts" 
+                   target="_blank" 
+                   rel="noopener noreferrer"
+                   class="cta-button" 
+                   aria-label="Watch on YouTube (opens in new tab)">
+                   📺 YouTube
+                </a>
+            </nav>
+        </section>
+
+        <section class="card" id="social" aria-labelledby="social-heading">
+            <h2 id="social-heading">Follow Us</h2>
+            <p>Stay connected and never miss an update:</p>
+            <nav class="social-links" aria-label="Social media links">
+                <a href="https://instagram.com/Roaming_Minds_Pod" 
+                   target="_blank" 
+                   rel="noopener noreferrer"
+                   class="cta-button" 
+                   aria-label="Follow us on Instagram (opens in new tab)">
+                   📷 Instagram
+                </a>
+                <a href="https://twitter.com/RoamingMindsPod" 
+                   target="_blank" 
+                   rel="noopener noreferrer"
+                   class="cta-button" 
+                   aria-label="Follow us on Twitter (opens in new tab)">
+                   🐦 Twitter
+                </a>
+                <a href="https://facebook.com/RoamingMindsPodcast" 
+                   target="_blank" 
+                   rel="noopener noreferrer"
+                   class="cta-button" 
+                   aria-label="Follow us on Facebook (opens in new tab)">
+                   📘 Facebook
+                </a>
+            </nav>
+        </section>
     </main>
 
-    <footer>
-        <p>&copy; 2024 Roaming Minds Podcast. All rights reserved.</p>
+    <footer role="contentinfo">
+        <p>&copy; <span id="current-year">2025</span> Roaming Minds Podcast. All rights reserved.</p>
     </footer>
 
+    <script>
+        // Dynamic year update
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+
+        // Canvas animation setup
+        const canvas = document.getElementById('background-canvas');
+        const ctx = canvas.getContext('2d');
+        let animationId;
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        // Particle system
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 3 + 1;
+                this.speedX = (Math.random() - 0.5) * 0.5;
+                this.speedY = (Math.random() - 0.5) * 0.5;
+                this.opacity = Math.random() * 0.5 + 0.2;
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                if (this.x > canvas.width) this.x = 0;
+                if (this.x < 0) this.x = canvas.width;
+                if (this.y > canvas.height) this.y = 0;
+                if (this.y < 0) this.y = canvas.height;
+            }
+
+            draw() {
+                ctx.globalAlpha = this.opacity;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = '#ffffff';
+                ctx.fill();
+            }
+        }
+
+        // Create particles
+        const particles = [];
+        for (let i = 0; i < 50; i++) {
+            particles.push(new Particle());
+        }
+
+        // Animation loop
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            particles.forEach(particle => {
+                particle.update();
+                particle.draw();
+            });
+
+            // Draw connections between nearby particles
+            ctx.globalAlpha = 0.1;
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distance < 100) {
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.strokeStyle = '#ffffff';
+                        ctx.stroke();
+                    }
+                }
+            }
+
+            animationId = requestAnimationFrame(animate);
+        }
+
+        // Start animation if motion is not reduced
+        if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            animate();
+        }
+
+        // Create floating comet elements
+        function createComet() {
+            const comet = document.createElement('div');
+            comet.className = 'comet';
+            comet.style.top = Math.random() * 100 + '%';
+            comet.style.animationDelay = Math.random() * 8 + 's';
+            document.body.appendChild(comet);
+
+            setTimeout(() => {
+                comet.remove();
+            }, 8000);
+        }
+
+        // Create comets periodically
+        if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            setInterval(createComet, 3000);
+        }
+
+        // Mouse interaction
+        let mouseX = 0;
+        let mouseY = 0;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+
+            // Create ripple effect
+            const ripple = document.createElement('div');
+            ripple.style.position = 'fixed';
+            ripple.style.left = mouseX + 'px';
+            ripple.style.top = mouseY + 'px';
+            ripple.style.width = '10px';
+            ripple.style.height = '10px';
+            ripple.style.background = 'rgba(255, 255, 255, 0.1)';
+            ripple.style.borderRadius = '50%';
+            ripple.style.pointerEvents = 'none';
+            ripple.style.transform = 'translate(-50%, -50%)';
+            ripple.style.animation = 'ripple 1s ease-out forwards';
+            ripple.style.zIndex = '1';
+            
+            document.body.appendChild(ripple);
+
+            setTimeout(() => ripple.remove(), 1000);
+        });
+
+        // Add ripple animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes ripple {
+                to {
+                    width: 50px;
+                    height: 50px;
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Smooth scroll for skip link
+        document.querySelector('.skip-link').addEventListener('click', function(e) {
+            e.preventDefault();
+            document.getElementById('main').focus();
+            document.getElementById('main').scrollIntoView({ behavior: 'smooth' });
+        });
+
+        // Enhanced button interactions
+        document.querySelectorAll('.cta-button').forEach(button => {
+            button.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-3px) scale(1.05)';
+            });
+            
+            button.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+
+        // Intersection Observer for scroll animations
+        if ('IntersectionObserver' in window) {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.animationPlayState = 'running';
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.card').forEach(card => {
+                observer.observe(card);
+            });
+        }
+
+        // Cleanup on page unload
+        window.addEventListener('beforeunload', () => {
+            if (animationId) {
+                cancelAnimationFrame(animationId);
+            }
+        });
+    </script>
 </body>
 </html>
