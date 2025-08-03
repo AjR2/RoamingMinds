@@ -379,6 +379,16 @@ ter with ligh text
                 color: #000;
             }
         }
+
+        /* Refresh button styles */
+        #refresh-episode:hover {
+            background: var(--primary-hover);
+            transform: scale(1.05);
+        }
+
+        #refresh-episode:active {
+            transform: scale(0.95);
+        }
     </style>
 </head>
 <body>
@@ -422,8 +432,13 @@ ter with ligh text
                 </ul>
             </div>
             <div style="background: rgba(214, 51, 132, 0.1); padding: 20px; border-radius: 12px; margin-top: 25px; border-left: 4px solid var(--primary-color);">
-                <h3 style="margin: 0 0 10px 0; color: rgba(60, 40, 80, 0.9); font-size: 1.1rem;">Latest Episode</h3>
-                <p style="margin: 0; font-style: italic; color: rgba(70, 50, 90, 0.8);">"Mental Health vs Mental Wellness"</p>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                    <h3 style="margin: 0; color: rgba(60, 40, 80, 0.9); font-size: 1.1rem;">Latest Episode</h3>
+                    <button id="refresh-episode" onclick="fetchLatestEpisode()" style="background: var(--primary-color); color: white; border: none; padding: 6px 12px; border-radius: 6px; font-size: 0.8rem; cursor: pointer; transition: var(--transition);" title="Refresh latest episode">🔄</button>
+                </div>
+                <div id="latest-episode">
+                    <p style="margin: 0; font-style: italic; color: rgba(70, 50, 90, 0.8);">Loading latest episode...</p>
+                </div>
             </div>
         </section>
 
@@ -673,6 +688,107 @@ ter with ligh text
                 cancelAnimationFrame(animationId);
             }
         });
+
+        // RSS Feed functionality
+        async function fetchLatestEpisode() {
+            const RSS_FEED_URL = 'https://anchor.fm/s/10746343c/podcast/rss';
+            const CORS_PROXY = 'https://api.allorigins.win/raw?url=';
+
+            // Show loading state
+            const refreshButton = document.getElementById('refresh-episode');
+            const latestEpisodeDiv = document.getElementById('latest-episode');
+
+            if (refreshButton) {
+                refreshButton.disabled = true;
+                refreshButton.innerHTML = '⏳';
+            }
+
+            if (latestEpisodeDiv) {
+                latestEpisodeDiv.innerHTML = '<p style="margin: 0; font-style: italic; color: rgba(70, 50, 90, 0.8);">Loading latest episode...</p>';
+            }
+
+            try {
+                console.log('Fetching RSS feed...');
+                const response = await fetch(CORS_PROXY + encodeURIComponent(RSS_FEED_URL));
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const rssText = await response.text();
+                console.log('RSS feed fetched successfully');
+
+                // Parse RSS XML
+                const parser = new DOMParser();
+                const xmlDoc = parser.parseFromString(rssText, 'text/xml');
+
+                // Check for parsing errors
+                const parserError = xmlDoc.querySelector('parsererror');
+                if (parserError) {
+                    throw new Error('XML parsing error');
+                }
+
+                // Get the first (latest) episode
+                const items = xmlDoc.querySelectorAll('item');
+                console.log(`Found ${items.length} episodes`);
+
+                if (items.length > 0) {
+                    const latestItem = items[0];
+
+                    // Extract title (handle CDATA)
+                    const titleElement = latestItem.querySelector('title');
+                    let title = 'Latest Episode';
+                    if (titleElement) {
+                        title = titleElement.textContent || titleElement.innerHTML || 'Latest Episode';
+                        // Clean up CDATA if present
+                        title = title.replace(/^\s*<!\[CDATA\[/, '').replace(/\]\]>\s*$/, '');
+                    }
+
+                    const pubDate = latestItem.querySelector('pubDate')?.textContent;
+                    console.log('Latest episode:', title, 'Published:', pubDate);
+
+                    // Format the date
+                    let formattedDate = '';
+                    if (pubDate) {
+                        const date = new Date(pubDate);
+                        formattedDate = date.toLocaleDateString('en-US', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric'
+                        });
+                    }
+
+                    // Update the latest episode section
+                    if (latestEpisodeDiv) {
+                        latestEpisodeDiv.innerHTML = `
+                            <p style="margin: 0 0 8px 0; font-style: italic; color: rgba(70, 50, 90, 0.8); font-weight: 600;">"${title}"</p>
+                            ${formattedDate ? `<p style="margin: 0; font-size: 0.9rem; color: rgba(70, 50, 90, 0.6);">${formattedDate}</p>` : ''}
+                        `;
+                        console.log('Latest episode updated successfully');
+                    }
+                } else {
+                    throw new Error('No episodes found in RSS feed');
+                }
+            } catch (error) {
+                console.error('Error fetching RSS feed:', error);
+                // Fallback to default content
+                if (latestEpisodeDiv) {
+                    latestEpisodeDiv.innerHTML = `
+                        <p style="margin: 0; font-style: italic; color: rgba(70, 50, 90, 0.8);">"Mental Health vs Mental Wellness"</p>
+                        <p style="margin: 0; font-size: 0.8rem; color: rgba(70, 50, 90, 0.5);">Unable to load latest episode</p>
+                    `;
+                }
+            } finally {
+                // Reset refresh button
+                if (refreshButton) {
+                    refreshButton.disabled = false;
+                    refreshButton.innerHTML = '🔄';
+                }
+            }
+        }
+
+        // Fetch latest episode when page loads
+        document.addEventListener('DOMContentLoaded', fetchLatestEpisode);
     </script>
 </body>
 </html>
