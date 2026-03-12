@@ -1,0 +1,88 @@
+.hosts__subtitle {
+  margin-bottom: 48px;
+}
+
+.hosts__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 28px;
+  max-width: 800px;
+}
+
+.hosts__card {
+  display: flex;
+  gap: 20px;
+  padding: 28px 24px;
+  align-items: flex-start;
+}
+
+.hosts__avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.hosts__avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hosts__initials {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: white;
+  letter-spacing: -0.02em;
+}
+
+.hosts__info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.hosts__name {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.hosts__role {
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-accent);
+}
+
+.hosts__bio {
+  font-size: 0.92rem;
+  color: var(--text-secondary);
+  line-height: 1.65;
+  margin-top: 8px;
+}
+
+.hosts__placeholder-note {
+  margin-top: 28px;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+.hosts__placeholder-note code {
+  background: var(--bg-secondary);
+  padding: 2px 5px;
+  border-radius: 4px;
+  font-family: monospace;
+  font-size: 0.8rem;
+}
+
+@media (max-width: 600px) {
+  .hosts__card {
+    flex-direction: column;
+  }
+}

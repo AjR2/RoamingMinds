@@ -1,0 +1,118 @@
+.listen__block {
+  margin-bottom: 72px;
+}
+
+.listen__block:last-child {
+  margin-bottom: 0;
+}
+
+.listen__subtitle {
+  margin-bottom: 36px;
+}
+
+/* Platforms */
+.listen__platforms {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+  max-width: 900px;
+}
+
+.listen__platform-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px 22px;
+  text-decoration: none;
+  color: inherit;
+  transition: box-shadow var(--transition), transform var(--transition), border-color var(--transition);
+}
+
+.listen__platform-card:hover .listen__platform-cta {
+  color: var(--color-primary);
+}
+
+.listen__platform-icon {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+}
+
+.listen__platform-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.listen__platform-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.listen__platform-name {
+  font-weight: 600;
+  font-size: 0.98rem;
+  color: var(--text-primary);
+}
+
+.listen__platform-cta {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  transition: color var(--transition);
+}
+
+/* Socials */
+.listen__socials-block {
+  background: var(--bg-secondary);
+  border-radius: var(--radius-lg);
+  padding: clamp(32px, 5vw, 56px);
+}
+
+.listen__socials {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.listen__social-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 20px;
+  text-decoration: none;
+  color: inherit;
+  flex: 1;
+  min-width: 200px;
+  transition: box-shadow var(--transition), transform var(--transition);
+}
+
+.listen__social-icon {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+}
+
+.listen__social-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.listen__social-name {
+  display: block;
+  font-weight: 600;
+  font-size: 0.92rem;
+  color: var(--text-primary);
+}
+
+.listen__social-handle {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+@media (max-width: 600px) {
+  .listen__social-card {
+    min-width: 100%;
+  }
+}
