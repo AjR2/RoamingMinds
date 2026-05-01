@@ -76,10 +76,10 @@ export default function Newsletter() {
           <p>
             Have a topic suggestion or want to get in touch?{' '}
             <a
-              href="mailto:roamingmindspod@gmail.com"
+              href="mailto:roamingminds@theenactive.com"
               className="newsletter__contact-link"
             >
-              roamingmindspod@gmail.com
+              roamingminds@theenactive.com
             </a>
           </p>
         </div>

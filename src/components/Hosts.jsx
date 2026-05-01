@@ -4,7 +4,26 @@ const HOSTS = [
   {
     name: 'AJ',
     role: 'Co-host',
-    bio: "AJ is a computer science educator, UX researcher, and founder passionate about the intersection of human cognition and technology. With a master's in Human-Computer Interaction and over eight years in education, AJ has spent a career studying how people think, learn, and make decisions. As the founder of Joyous — a peer-to-peer mental wellness platform — and a former Head UX Researcher in the AR space, AJ brings both research rigor and lived experience to every conversation. On Roaming Minds, AJ connects the psychology, the data, and real-world frameworks that help young professionals reclaim how they think and feel.",
+    bio: (
+      <>
+        AJ is a computer science educator, UX researcher, and founder passionate about the
+        intersection of human cognition and technology. With a master's in Human-Computer
+        Interaction and over eight years in education, AJ has spent a career studying how people
+        think, learn, and make decisions. As the founder of{' '}
+        <a
+          href="https://theenactive.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="hosts__bio-link"
+        >
+          Enactive
+        </a>
+        {' '}— a cognitive offload service that helps high-performers close open decision loops —
+        and a former Head UX Researcher in the AR space, AJ brings both research rigor and lived
+        experience to every conversation. On Roaming Minds, AJ connects the psychology, the data,
+        and real-world frameworks that help young professionals reclaim how they think and feel.
+      </>
+    ),
     initials: 'AJ',
     color: 'var(--color-primary)',
   },

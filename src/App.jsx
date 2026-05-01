@@ -1,12 +1,13 @@
-import Navbar     from './components/Navbar'
-import Hero       from './components/Hero'
-import About      from './components/About'
-import Episodes   from './components/Episodes'
-import Hosts      from './components/Hosts'
-import Topics     from './components/Topics'
-import Listen     from './components/Listen'
-import Newsletter from './components/Newsletter'
-import Footer     from './components/Footer'
+import Navbar      from './components/Navbar'
+import Hero        from './components/Hero'
+import About       from './components/About'
+import Episodes    from './components/Episodes'
+import Hosts       from './components/Hosts'
+import WorkWithAJ  from './components/WorkWithAJ'
+import Topics      from './components/Topics'
+import Listen      from './components/Listen'
+import Newsletter  from './components/Newsletter'
+import Footer      from './components/Footer'
 
 export default function App() {
   return (
@@ -25,6 +26,7 @@ export default function App() {
         <About />
         <Episodes />
         <Hosts />
+        <WorkWithAJ />
         <Topics />
         <Listen />
         <Newsletter />

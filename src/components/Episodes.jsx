@@ -2,7 +2,10 @@ import { useState, useEffect } from 'react'
 import './Episodes.css'
 
 const RSS_URL = 'https://anchor.fm/s/10746343c/podcast/rss'
-const CORS_PROXY = 'https://api.allorigins.win/raw?url='
+const CORS_PROXIES = [
+  'https://corsproxy.io/?url=',
+  'https://api.allorigins.win/raw?url=',
+]
 const MAX_EPISODES = 6
 
 function formatDate(dateStr) {
@@ -34,10 +37,19 @@ export default function Episodes() {
   const fetchEpisodes = async () => {
     setLoading(true)
     setError(false)
+    let text = null
+    for (const proxy of CORS_PROXIES) {
+      try {
+        const res = await fetch(proxy + encodeURIComponent(RSS_URL))
+        if (!res.ok) continue
+        text = await res.text()
+        break
+      } catch {
+        continue
+      }
+    }
     try {
-      const res = await fetch(CORS_PROXY + encodeURIComponent(RSS_URL))
-      if (!res.ok) throw new Error('Network error')
-      const text = await res.text()
+      if (!text) throw new Error('All proxies failed')
       const xml  = new DOMParser().parseFromString(text, 'text/xml')
       if (xml.querySelector('parsererror')) throw new Error('Parse error')
 

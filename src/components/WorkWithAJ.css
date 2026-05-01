@@ -1,0 +1,23 @@
+.work-with-aj {
+  background: var(--bg-secondary);
+}
+
+.work-with-aj__inner {
+  max-width: 640px;
+}
+
+.work-with-aj__title {
+  margin-bottom: 0;
+}
+
+.work-with-aj__body {
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin-top: 20px;
+  margin-bottom: 28px;
+}
+
+.work-with-aj__cta {
+  display: inline-block;
+}

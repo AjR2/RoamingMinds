@@ -67,6 +67,17 @@
   margin-top: 8px;
 }
 
+.hosts__bio-link {
+  color: var(--color-accent);
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  transition: text-decoration-color var(--transition);
+}
+
+.hosts__bio-link:hover {
+  text-decoration-color: var(--color-accent);
+}
+
 .hosts__placeholder-note {
   margin-top: 28px;
   font-size: 0.82rem;
