@@ -1,20 +1,44 @@
 import { useState } from 'react'
 import './Newsletter.css'
 
+// After creating your ConvertKit form, replace this with your numeric Form ID.
+// Find it at: kit.com → Forms → your form → Settings → the ID in the URL.
+const CONVERTKIT_FORM_ID = '9392365'
+
 export default function Newsletter() {
   const [email, setEmail]       = useState('')
   const [submitted, setSubmitted] = useState(false)
+  const [loading, setLoading]   = useState(false)
   const [error, setError]       = useState('')
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       setError('Please enter a valid email address.')
       return
     }
-    // TODO: Wire up to a real email provider (e.g. Mailchimp, ConvertKit, Buttondown)
     setError('')
-    setSubmitted(true)
+    setLoading(true)
+    try {
+      const res = await fetch(
+        `https://app.convertkit.com/forms/${CONVERTKIT_FORM_ID}/subscriptions`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email_address: email }),
+        }
+      )
+      const data = await res.json()
+      if (data.status === 'success' || res.ok) {
+        setSubmitted(true)
+      } else {
+        setError('Something went wrong. Please try again.')
+      }
+    } catch {
+      setError('Something went wrong. Please try again.')
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -53,9 +77,10 @@ export default function Newsletter() {
                     onChange={e => { setEmail(e.target.value); setError('') }}
                     aria-describedby={error ? 'newsletter-error' : undefined}
                     autoComplete="email"
+                    disabled={loading}
                   />
-                  <button type="submit" className="btn btn-accent newsletter__submit">
-                    Subscribe
+                  <button type="submit" className="btn btn-accent newsletter__submit" disabled={loading}>
+                    {loading ? 'Subscribing…' : 'Subscribe'}
                   </button>
                 </div>
                 {error && (
